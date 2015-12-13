@@ -35,11 +35,6 @@ func bigExp(x, y, n big.Int) big.Int {
 	return *(R).Exp(&x, &y, &n)
 }
 
-func bigMul(a, b big.Int) big.Int {
-	R := big.NewInt(int64(0))
-	return *(R).Mul(&a, &b)
-}
-
 /**
   - this is effectively a message signed by us and granted to the other
   (((m1 ^ d1) mod n1) ^ e2) mod n2
