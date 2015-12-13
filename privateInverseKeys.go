@@ -40,12 +40,6 @@ func bigMul(a, b big.Int) big.Int {
 	return *(R).Mul(&a, &b)
 }
 
-func (my rawPKeyPair) BlindKey(his pubKey) pubKey {
-	return pubKey{
-		N: my.pub.N, E: bigMul(my.D, his.E),
-	}
-}
-
 /**
   - this is effectively a message signed by us and granted to the other
   (((m1 ^ d1) mod n1) ^ e2) mod n2
@@ -77,8 +71,6 @@ func main() {
 	//Alice and bob exchange public keys,
 	//and they can use this to compute a pair of mutually inverse
 	//keys that are not known to each other.
-	aliceBlind := aliceTmp.BlindKey(bobTmp.pub)
-	bobBlind := bobTmp.BlindKey(aliceTmp.pub)
 
 	//32byte secret key
 	randKey := make([]byte, 32)
@@ -87,7 +79,6 @@ func main() {
 	m.SetBytes(randKey)
 
 	fmt.Printf("Alice and Bob use these to negotiate inverses with no public\n")
-	fmt.Printf("a: %v\nb: %v\n", aliceBlind, bobBlind)
 	fmt.Print("Alice makes up a giant key and encrypts it to bob\n")
 	fmt.Printf("m:%v\n", m)
 	m = apply(m, aliceTmp, bobTmp.pub)
